@@ -43,6 +43,8 @@ def generate_csv(filename, object_count, instances_per_object):
 # filename = input("Enter the desired filename (including .csv extension): ")
 object_count = int(input("Enter object count: "))
 instances_per_object = int(input("Enter instances per object: "))
-filename = ("object" + str(object_count) + "_instance" + str(instances_per_object) + ".csv")
+folder_path = "./data/"
+filename = folder_path + ("object" + str(object_count) + "_instance" + str(instances_per_object) + ".csv")
+
 
 generate_csv(filename, object_count, instances_per_object)
