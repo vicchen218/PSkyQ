@@ -1,0 +1,16 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Probability_1
+Object1,Instance1,617,-121,60,0.73
+Object1,Instance2,617,-104,60,0.01
+Object1,Instance3,617,-38,60,0.26
+Object2,Instance1,221,-26,190,0.38
+Object2,Instance2,221,-85,190,0.37
+Object2,Instance3,221,-55,190,0.25
+Object3,Instance1,674,-16,60,0.06
+Object3,Instance2,674,-146,60,0.43
+Object3,Instance3,674,-70,60,0.51
+Object4,Instance1,174,-81,110,0.42
+Object4,Instance2,174,-158,110,0.43
+Object4,Instance3,174,-176,110,0.14
+Object5,Instance1,596,-67,180,0.08
+Object5,Instance2,596,-123,180,0.13
+Object5,Instance3,596,-155,180,0.79

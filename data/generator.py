@@ -16,6 +16,7 @@ def generate_csv(filename, object_count, instances_per_object):
         for obj_index in range(1, object_count + 1):
             row_dict = {'Object': f'Object{obj_index}'}
             total_probability = 0
+            attribute1 = random.randint(1, 1000)
             attribute3_value = random.randint(1, 20) * 10
             for instance_index in range(1, instances_per_object + 1):
                 if instance_index == instances_per_object:
@@ -24,7 +25,7 @@ def generate_csv(filename, object_count, instances_per_object):
                     probability = random.uniform(0, 1 - total_probability)
                 total_probability += probability
                 
-                attribute1 = random.randint(1, 1000)
+                
                 attribute2 = random.randint(-200, -1)
                 
                 row_dict.update({
