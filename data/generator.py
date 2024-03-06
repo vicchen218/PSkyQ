@@ -26,7 +26,7 @@ def generate_csv(filename, object_count, instances_per_object):
                 total_probability += probability
                 
                 
-                attribute2 = random.randint(-200, -1)
+                attribute2 = random.randint(-50, -1)
                 
                 row_dict.update({
                     f'Instance{instance_index}': f'Instance{instance_index}',
