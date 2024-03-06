@@ -1,7 +1,7 @@
 import csv
 import random
 
-def generate_csv(filename, object_count, instances_per_object):
+def generate_csv(filename, object_count, instances_per_object, localName):
     # 動態生成列名
     fieldnames = ['Object']
     for i in range(1, instances_per_object + 1):
@@ -14,7 +14,7 @@ def generate_csv(filename, object_count, instances_per_object):
         writer.writeheader()
         
         for obj_index in range(1, object_count + 1):
-            row_dict = {'Object': f'Object{obj_index}'}
+            row_dict = {'Object': f'Object{obj_index}' + '_' + localName}
             total_probability = 0
             attribute1 = random.randint(1, 1000)
             attribute3_value = random.randint(1, 20) * 10
@@ -42,10 +42,11 @@ def generate_csv(filename, object_count, instances_per_object):
 
 # Example usage:
 # filename = input("Enter the desired filename (including .csv extension): ")
+localName = input("Enter local naame: ")
 object_count = int(input("Enter object count: "))
 instances_per_object = int(input("Enter instances per object: "))
 folder_path = "./data/"
-filename = folder_path + ("object" + str(object_count) + "_instance" + str(instances_per_object) + ".csv")
+filename = folder_path + ( localName  + "_" + "object" + str(object_count) + "_instance" + str(instances_per_object)  + ".csv")
 
 
-generate_csv(filename, object_count, instances_per_object)
+generate_csv(filename, object_count, instances_per_object, localName)

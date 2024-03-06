@@ -59,10 +59,11 @@ def save_probabilities_to_csv(probabilities, output_file_path):
 
 # 讀取CSV檔案
 csv_file_path = "./data/"
-file_name = 'object10000_instance2'  # 更改為您的CSV檔案路徑
+file_name = 'A_object1000_instance3'  # 更改為您的CSV檔案路徑
 data = read_data_from_csv(csv_file_path + file_name + '.csv')
 # 計算並返回結果
 probabilities = calculate_probabilities(data)
 # 保存計算結果到CSV檔案
+
 output_file_path = 'PSkytestResult/' + file_name + '_probabilities.csv'  # 指定輸出檔案的路徑
 save_probabilities_to_csv(probabilities, output_file_path)

@@ -1,0 +1,3 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Probability_1,Instance2,Attribute1_2,Attribute2_2,Attribute3_2,Probability_2,Instance3,Attribute1_3,Attribute2_3,Attribute3_3,Probability_3
+Object1A,Instance1,417,-35,190,0.99,Instance2,417,-44,190,0.0,Instance3,417,-27,190,0.01
+Object2A,Instance1,476,-43,40,0.57,Instance2,476,-41,40,0.2,Instance3,476,-31,40,0.23
