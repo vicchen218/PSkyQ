@@ -35,9 +35,13 @@ def choose_action(state, epsilon):
         return np.argmax(Q_table[state, :])
 
 # 更新門檻值
-def update_threshold(data):
+def update_threshold(data, old_threshold):
     new_threshold = data['Probability'].mean()
-    return new_threshold
+    print(abs(new_threshold - old_threshold) > 0.0005)
+    if abs(new_threshold - old_threshold) > 0.0005:
+        return new_threshold, True  # 返回新的門檻值及更新標誌
+    else:
+        return old_threshold, False  # 返回舊的門檻值及不更新標誌
 
 # 模擬Q學習訓練過程
 def q_learning_train(data, threshold, epsilon):
@@ -67,29 +71,33 @@ def decide_uploads(data, Q_table, threshold):
 file_path = "./PSkytestResult/object1000_instance3_probabilities.csv"
 data = read_data(file_path)
 window_size = 100
-slide_step = 20  # 新物件的數量，對應視窗滑動的步長
+slide_step = 20
 
-# 初始門檻值和訓練
 initial_data = data[:window_size]
 initial_threshold = initial_data['Probability'].mean()
 q_learning_train(initial_data, initial_threshold, epsilon)
-last_upload_set = decide_uploads(initial_data, Q_table, initial_threshold)  # 上次的上傳集合
+last_upload_set = decide_uploads(initial_data, Q_table, initial_threshold)
 print("Initial upload set:", last_upload_set)
 
-# 循環處理新進入的物件
 for start in range(slide_step, len(data), slide_step):
     end = start + window_size
     if end > len(data):
         break
     window_data = data[start:end]
-    new_threshold = update_threshold(window_data)
-    q_learning_train(window_data, new_threshold, epsilon)
-    current_upload_set = decide_uploads(window_data, Q_table, new_threshold)  # 當前的上傳集合
+    new_threshold, should_update = update_threshold(window_data, initial_threshold)
+    
+    if should_update:
+        # 如果應該更新門檻值，則使用新的門檻值重新訓練Q表
+        q_learning_train(window_data, new_threshold, epsilon)
+        initial_threshold = new_threshold  # 更新門檻值為新計算的門檻值
+    # 否則繼續使用舊門檻值和Q表
     print(Q_table)
     print(new_threshold)
+    current_upload_set = decide_uploads(window_data, Q_table, new_threshold)
+    
     if current_upload_set == last_upload_set:
         print("新的set和舊的相同不上傳")
     else:
         print(f"Updated upload set for window starting at {start}:", current_upload_set)
-        last_upload_set = current_upload_set  # 更新上次的上傳集合為當前集合
+        last_upload_set = current_upload_set
 
