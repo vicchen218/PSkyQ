@@ -40,8 +40,8 @@ class QLearning():
     # 更新門檻值
     def update_threshold(self, data, old_threshold):
         new_threshold = data['Probability'].mean()
-        print(abs(new_threshold - old_threshold) > 0.01)
-        if abs(new_threshold - old_threshold) > 0.01:
+        print(abs(new_threshold - old_threshold) > 0.005)
+        if abs(new_threshold - old_threshold) > 0.005:
             return new_threshold, True  # 返回新的門檻值及更新標誌
         else:
             return old_threshold, False  # 返回舊的門檻值及不更新標誌
@@ -68,13 +68,31 @@ class QLearning():
         return upload_set
 
     def runFun(self, original_data, index = 0):
+        # 20 is slide_step
+        # 100 is window_size
         print("Step start: runFun")
+        index = 0
         # 主要流程
-        slice_original_data = dict(itertools.islice(original_data.items(), index, 100))
-        self.runSlideWindow(slice_original_data, 100 , 0)
+        print("1 time: ")
+        slide_window_dict = dict(itertools.islice(original_data.items(), index, 100))
+        index += 100
+        self.runSlideWindow(slide_window_dict, 100 , 0)
+        times = 1
+        
+        # for
+        print("This is time: " + str(2))
+        old_item_data = dict(itertools.islice(slide_window_dict.items(), 20, 100))
+        new_item_data = dict(itertools.islice(original_data.items(), index, index + 20))
+        index += 20
+        # combine two dict (old & new)
+        slide_window_dict = {**old_item_data, **new_item_data}
+        # # print(slice_original_data)
+        self.runSlideWindow(slide_window_dict, 100 , 20)
+        # times += 1
         
     def runSlideWindow(self, original_data, window_size = 100, slide_step = 0):
-
+        
+        
         probability_dict = newPSky.calculate_probabilities(original_data)
         # get initial_threshold
         initial_threshold = 0.0
@@ -86,27 +104,33 @@ class QLearning():
         last_upload_set = self.decide_uploads(probability_dict, self.Q_table, initial_threshold)
         # print("Initial upload set:", last_upload_set)
         
-        # Slide Window 
-        # for start in range(slide_step, len(original_data), slide_step):
-        #     end = start + window_size
-        #     if end > len(original_data):
-        #         break
-        #     window_data = original_data[start:end]
-        #     new_threshold, should_update = self.update_threshold(window_data, initial_threshold)
+        # Slide Window for loop
+        if( slide_step != 0 ):
+            # print(len(original_data))
             
-        #     if should_update:
-        #         # 如果應該更新門檻值，則使用新的門檻值重新訓練Q表
-        #         self.q_learning_train(window_data, new_threshold, self.epsilon)
-        #         initial_threshold = new_threshold  # 更新門檻值為新計算的門檻值
-        #     # 否則繼續使用舊門檻值和Q表
-        #     print(self.Q_table)
-        #     print(new_threshold)
-        #     current_upload_set = self.decide_uploads(window_data, self.Q_table, new_threshold)
-            
-        #     if current_upload_set == last_upload_set:
-        #         print("新的set和舊的相同不上傳")
-        #     else:
-        #         print(f"Updated upload set for window starting at {start}:", current_upload_set)
-        #         last_upload_set = current_upload_set
+            for start in range(slide_step, len(original_data), slide_step):
+                end = start + window_size
+                if end > len(original_data):
+                    print("nytdu")
+                    break
+                window_data = original_data[start:end]
+                new_threshold, should_update = self.update_threshold(window_data, initial_threshold)
+                print("in")
+                
+                if should_update:
+                    # 如果應該更新門檻值，則使用新的門檻值重新訓練Q表
+                    self.q_learning_train(window_data, new_threshold, self.epsilon)
+                    initial_threshold = new_threshold  # 更新門檻值為新計算的門檻值
+                # 否則繼續使用舊門檻值和Q表
+                print(self.Q_table)
+                print(new_threshold)
+                current_upload_set = self.decide_uploads(window_data, self.Q_table, new_threshold)
+                
+                if current_upload_set == last_upload_set:
+                    print("新的set和舊的相同不上傳")
+                else:
+                    print(f"Updated upload set for window starting at {start}:", current_upload_set)
+                    last_upload_set = current_upload_set
+            # print("EMD")
 
 newPSky = PSky()

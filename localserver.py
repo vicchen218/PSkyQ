@@ -9,7 +9,6 @@ def main():
     csv_file_path = "./data/"
     input_csv_file_name = "A_object1000_instance3"
     original_data = FileManager.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
-    index = 0
     
 
     # # 步驟2: 傳送到第一個外部程式進行處理，並產生新的CSV檔案
