@@ -1,23 +1,24 @@
 import pandas as pd
-from PSkytest import PSky
-from qlearning_sw  import QLearning
-
-# from qlearning_sw_t1 import get_skyline_set as process_second  # 假設函數名稱是 get_skyline_set
+from qlearning_sw_t1  import QLearning
+from fileManager import FileManager
 
 def main():
-    # # 步驟1: 讀取CSV檔案
-    input_csv_file_name = "A_object1000_instance3"
+    newQLearning = QLearning()
     
+    # # 步驟1: 讀取CSV檔案
+    csv_file_path = "./data/"
+    input_csv_file_name = "A_object1000_instance3"
+    original_data = FileManager.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
+    index = 0
+    
+
     # # 步驟2: 傳送到第一個外部程式進行處理，並產生新的CSV檔案
     print("Step 2: PSky")
-    newSky = PSky()
-    newSky.runFun(input_csv_file_name)
+    # newSky.runFun(input_csv_file_name)
     # 步驟3: 讀取由第一個程式生成的CSV檔案
-    
+    newQLearning.runFun(original_data)
     # # 步驟4: 將處理後的CSV檔案傳送到第二個外部程式進行處理
-    print("Step 4: QLearning")
-    newQ = QLearning()
-    newQ.runFun(input_csv_file_name)
+    #first time get 100
     
     # # 步驟5: 比對原始資料與要上傳的天際線集合，並準備上傳的資料
     # todo
