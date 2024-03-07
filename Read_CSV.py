@@ -1,6 +1,6 @@
 import pandas as pd
 
-class FileManager():
+class Read_CSV():
     # from qlearning_sw_t1 import get_skyline_set as process_second  # 假設函數名稱是 get_skyline_set
     def read_data_from_csv(csv_file_path):
         # 從CSV檔案讀取數據

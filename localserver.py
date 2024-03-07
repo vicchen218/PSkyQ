@@ -1,6 +1,6 @@
 import pandas as pd
-from qlearning_sw_t1  import QLearning
-from fileManager import FileManager
+from qlearning_sw  import QLearning
+from Read_CSV import Read_CSV
 
 def main():
     newQLearning = QLearning()
@@ -8,14 +8,14 @@ def main():
     # # 步驟1: 讀取CSV檔案
     csv_file_path = "./data/"
     input_csv_file_name = "A_object1000_instance3"
-    original_data = FileManager.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
+    original_data = Read_CSV.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
     
 
     # # 步驟2: 傳送到第一個外部程式進行處理，並產生新的CSV檔案
     print("Step 2: PSky")
     # newSky.runFun(input_csv_file_name)
     # 步驟3: 讀取由第一個程式生成的CSV檔案
-    newQLearning.runFun(original_data)
+    newQLearning.runSlideWindow(original_data)
     # # 步驟4: 將處理後的CSV檔案傳送到第二個外部程式進行處理
     #first time get 100
     
