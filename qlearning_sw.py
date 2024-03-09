@@ -73,6 +73,7 @@ class QLearning():
         :param new_threshold: 新計算的門檻值。
         :return: 更新後的門檻值和是否進行了更新的標誌。
         """
+        print(abs(new_threshold - old_threshold))
         if abs(new_threshold - old_threshold) > 0.005:
             return new_threshold, True  # 返回新的門檻值及更新標誌
         else:
@@ -124,22 +125,24 @@ class QLearning():
         :param min_slide_step: 每次滑動步長的最小值，預設為100。
         :param max_slide_step: 每次滑動步長的最大值，預設為200。
         """
-       
+        print("Step start: runFun")
         index = 0
+        total_upload_set_size = 0
 
         # 首次處理，根據window_size初始化滑動窗口
         print("Initial time: ")
         slide_window_dict = dict(itertools.islice(original_data.items(), index, window_size))
         index += random.randint(min_slide_step, max_slide_step)
-        current_threshold, last_upload_set = self.SlideWindowInitialize(slide_window_dict)
-                
+        current_threshold, last_upload_set, total_upload_set_size = self.SlideWindowInitialize(slide_window_dict, total_upload_set_size)
+        print("total_upload_set_size: " + str(total_upload_set_size))
+        
         print("initial_threshold", current_threshold)
         print("Initial upload set:", last_upload_set)
         times = 1
         
         # 進行滑動窗口更新
         while True:
-          
+            print(f"This is time: {times + 1}")
             # 隨機選擇這次更新的步長
             slide_step = random.randint(min_slide_step, max_slide_step)
             # 更新滑動窗口，刪除舊數據，添加新數據
@@ -155,14 +158,16 @@ class QLearning():
             print("SlideWindowUpdate")
             print("window_size: "+ str(window_size))
             print("slide_step: "+ str(slide_step))
-            print(times)
-            current_threshold, last_upload_set = self.SlideWindowUpdate(slide_window_dict, current_threshold, last_upload_set)
+            print("update times :" + str(times))
+            current_threshold, last_upload_set, total_upload_set_size = self.SlideWindowUpdate(slide_window_dict, current_threshold, last_upload_set, total_upload_set_size)
+            print("total_upload_set_size: " + str(total_upload_set_size))
             times += 1
             if last_upload_set == None:
                 break  # 如果上傳集合為空，結束更新循環
+        print("total_upload_set_size: " + str(total_upload_set_size))
 
     # 滑動窗口初始化
-    def SlideWindowInitialize(self, original_data):
+    def SlideWindowInitialize(self, original_data, total_upload_set_size):
         """
         利用原始數據初始化滑動窗口，計算初始閾值和上傳集合。
         :param original_data: 初始滑動窗口的數據集。
@@ -177,11 +182,11 @@ class QLearning():
         # 決定初始上傳集合
         last_upload_set = self.decide_uploads(probability_dict, self.Q_table, initial_threshold)
         print(self.Q_table)
-        
-        return initial_threshold, last_upload_set
+        total_upload_set_size += len(last_upload_set)
+        return initial_threshold, last_upload_set, total_upload_set_size
 
     # 滑動窗口更新
-    def SlideWindowUpdate(self, original_data, old_threshold, last_upload_set):
+    def SlideWindowUpdate(self, original_data, old_threshold, last_upload_set, total_upload_set_size):
         """
         更新滑動窗口，重新計算閾值和上傳集合。
         :param original_data: 當前滑動窗口的數據集。
@@ -215,11 +220,12 @@ class QLearning():
             print("新的set和舊的相同不上傳")
             result_set = last_upload_set
         else:
-            print("新的set和舊的不相同上傳")
+            print("新的set和舊的不相同")
             print(current_upload_set)
+            total_upload_set_size += len(current_upload_set)
             result_set = current_upload_set
             
-        return result_threshold, result_set
+        return result_threshold, result_set, total_upload_set_size
 
 # 實例化PSky類，用於後續計算物件的概率
 newPSky = PSky()
