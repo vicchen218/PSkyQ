@@ -134,7 +134,7 @@ class QLearning():
         print("Initial time: ")
         slide_window_dict = dict(itertools.islice(original_data.items(), index, window_size))
         index += random.randint(min_slide_step, max_slide_step)
-        current_threshold, last_upload_set, total_upload_set_size,total_upload_set = self.SlideWindowInitialize(slide_window_dict, total_upload_set_size,total_upload_set)
+        current_threshold, last_upload_set, total_upload_set_size, total_upload_set = self.SlideWindowInitialize(slide_window_dict, total_upload_set_size,total_upload_set)
         print("total_upload_set_size: " + str(len(total_upload_set)))
         
         print("initial_threshold", current_threshold)
@@ -188,7 +188,7 @@ class QLearning():
         total_upload_set_size += len(last_upload_set)
         
         
-        return initial_threshold, last_upload_set, total_upload_set_size,total_upload_set
+        return initial_threshold, last_upload_set, total_upload_set_size, total_upload_set
 
     # 滑動窗口更新
     def SlideWindowUpdate(self, original_data, old_threshold, last_upload_set, total_upload_set_size,total_upload_set):
