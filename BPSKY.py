@@ -47,6 +47,7 @@ class BruteMethod():
         :param min_slide_step: 每次滑動步長的最小值，預設為100。
         :param max_slide_step: 每次滑動步長的最大值，預設為200。
         """
+        total_upload_set=set()
         print("Step start: runFun")
         index = 0
         total_upload_set_size = 0
@@ -54,10 +55,10 @@ class BruteMethod():
         print("Initial time: ")
         slide_window_dict = dict(itertools.islice(original_data.items(), index, window_size))
         index += random.randint(min_slide_step, max_slide_step)
-        result_upload_set = self.SlideWindowInitialize(slide_window_dict)
+        result_upload_set, total_upload_set = self.SlideWindowInitialize(slide_window_dict, total_upload_set)
         
         total_upload_set_size += len(result_upload_set)
-        print("total_upload_set_size: " + str(total_upload_set_size))
+        print("total_upload_set_size: " + str(len(total_upload_set)))
         times = 1
         
         # 進行滑動窗口更新
@@ -79,9 +80,9 @@ class BruteMethod():
             print("window_size: "+ str(window_size))
             print("slide_step: "+ str(slide_step))
             print("update times :" + str(times))
-            result_upload_set = self.SlideWindowUpdate(slide_window_dict)
+            result_upload_set, total_upload_set = self.SlideWindowUpdate(slide_window_dict, total_upload_set)
             total_upload_set_size += len(result_upload_set)
-            print("total_upload_set_size: " + str(total_upload_set_size))
+            print("total_upload_set_size: " + str(len(total_upload_set)))
             
             times += 1
             if result_upload_set == None:
@@ -90,7 +91,7 @@ class BruteMethod():
         print("total_upload_set_size: " + str(total_upload_set_size))
         
     # 滑動窗口初始化
-    def SlideWindowInitialize(self, original_data):
+    def SlideWindowInitialize(self, original_data, total_upload_set):
         """
         利用原始數據初始化滑動窗口，計算初始閾值和上傳集合。
         :param original_data: 初始滑動窗口的數據集。
@@ -98,10 +99,11 @@ class BruteMethod():
         """
         probability_dict = newPSky.calculate_probabilities(original_data)
         result_upload_set = self.upload_filter(probability_dict)
-        return result_upload_set
+        total_upload_set= total_upload_set | result_upload_set
+        return result_upload_set,total_upload_set
 
     # 滑動窗口更新
-    def SlideWindowUpdate(self, original_data):
+    def SlideWindowUpdate(self, original_data, total_upload_set):
         """
         更新滑動窗口，重新計算閾值和上傳集合。
         :param original_data: 當前滑動窗口的數據集。
@@ -109,14 +111,14 @@ class BruteMethod():
         :param last_upload_set: 上一次的上傳集合。
         :return: 新的閾值和上傳集合。
         """
-        # 計算新的概率分佈
         probability_dict = newPSky.calculate_probabilities(original_data)
         if len(probability_dict) == 0:
             return 0, None  # 如果新的數據集為空，返回0和None
-
-        # 根據新的Q表和閾值決定上傳集合
+        
         result_upload_set = self.upload_filter(probability_dict)
-        return result_upload_set
+        total_upload_set = total_upload_set | result_upload_set
+        
+        return result_upload_set, total_upload_set
 
 # 實例化PSky類，用於後續計算物件的概率
 newPSky = PSky()
