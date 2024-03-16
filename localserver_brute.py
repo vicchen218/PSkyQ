@@ -9,7 +9,7 @@ def main():
     
     # : 讀取CSV檔案
     csv_file_path = "./data/"
-    input_csv_file_name = "D_object50000_instance3"
+    input_csv_file_name = "B_object50000_instance3"
     original_data = Read_CSV.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
     
     newBruteMethod.set_threshold(0.01)
