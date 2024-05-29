@@ -1,0 +1,4 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Probability_1,Instance2,Attribute1_2,Attribute2_2,Attribute3_2,Probability_2,Instance3,Attribute1_3,Attribute2_3,Attribute3_3,Probability_3
+Object1_a,Instance1,10,2,10,0.33,Instance2,10,9,10,0.53,Instance3,10,4,10,0.14
+Object2_a,Instance1,5,3,20,0.66,Instance2,5,1,20,0.31,Instance3,5,4,20,0.02
+Object3_a,Instance1,5,3,16,0.34,Instance2,5,4,16,0.28,Instance3,5,4,16,0.38

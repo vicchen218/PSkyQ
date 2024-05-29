@@ -42,7 +42,7 @@ def generate_csv(filename, object_count, instances_per_object, localName):
 
 # Example usage:
 # filename = input("Enter the desired filename (including .csv extension): ")
-localName = input("Enter local naame: ")
+localName = input("Enter local name: ")
 object_count = int(input("Enter object count: "))
 instances_per_object = int(input("Enter instances per object: "))
 folder_path = "./data/"

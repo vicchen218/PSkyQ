@@ -1,5 +1,5 @@
 import pandas as pd
-from qlearning_sw import QLearning
+from qlearning_sw_Q1 import QLearning
 from Read_CSV import Read_CSV
 import time
 
