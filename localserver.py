@@ -1,18 +1,21 @@
 import pandas as pd
-from qlearning_sw_Q1 import QLearning
+from qlearning_sw import QLearning
 from Read_CSV import Read_CSV
 import time
 
 def main():
+    #Change value here:
+    window_size = 1000
+    
     start_time = time.time()  # 獲取當前時間作為開始時間
-    newQLearning = QLearning()
+    newQLearning = QLearning(window_size)
     
     # : 讀取CSV檔案
     csv_file_path = "./data/"
     input_csv_file_name = "A_object1000_instance3"
     original_data = Read_CSV.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
     
-    newQLearning.runSlideWindow(original_data, window_size=1000, min_slide_step=10, max_slide_step=20)
+    newQLearning.runSlideWindow(original_data, window_size, min_slide_step=10, max_slide_step=20)
     
     end_time = time.time()  # 獲取當前時間作為結束時間
     print(f"Finish. The program took {end_time - start_time} seconds.")  # 計算並印出運行時間

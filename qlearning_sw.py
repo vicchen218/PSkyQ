@@ -6,22 +6,71 @@ import itertools
 import random
 
 class QLearning():
-    # 定義一個基於Q學習的類，用於決定是否上傳物件
+    def __init__(self, window_size, epsilon=0.1, alpha=0.1, gamma=0.95):
+        self.window_size = window_size
+        self.epsilon = epsilon
+        self.alpha = alpha
+        self.gamma = gamma
+        self.action_space = [-1/window_size, 0, 1/window_size]  # 動作空間: 減少、不變、增加門檻值
+        self.state_size = int(2 * window_size + 1)  # 從 -1 到 1 的狀態
+        self.Q = np.zeros((self.state_size, len(self.action_space)))
+    
+    def normalize_state(self, diff):
+        # 將差異映射到狀態索引
+        return int((diff + 1) * self.window_size)  # 將 [-1, 1] 映射到 [0, 狀態數量]
 
-    # 定義計算報酬的函數
-    def calculate_reward(self, probability, action, threshold):
-        """
-        根據預測概率、採取的行動和設定的閾值來計算報酬。
-        :param probability: 物件被預測為正類的概率。
-        :param action: 採取的行動，0或1，其中1代表上傳，0代表不上傳。
-        :param threshold: 決策閾值。
-        :return: 計算得到的報酬值。
-        """
-        if probability >= threshold:
-            return 2 if action == 1 else -2
+    def choose_action(self, state_index):
+        # 採用 ε-greedy 策略選擇動作
+        if random.random() < self.epsilon:
+            action_index = random.randint(0, len(self.action_space) - 1)
         else:
-            return 2 if action == 0 else -2
+            action_index = np.argmax(self.Q[state_index])
+        return action_index
 
+    def update_threshold(self, old_threshold, difference):
+        state_index = self.normalize_state(difference)
+        action_index = self.choose_action(state_index)
+        print("gpt old old_threshold", old_threshold)
+
+        # 選擇動作並計算新門檻值
+        action = self.action_space[action_index]
+        new_threshold = old_threshold + action
+        new_threshold = max(0, min(new_threshold, 1))  # 確保門檻值在[0,1]範圍內
+
+        # 避免門檻值陷入0或1
+        if new_threshold == 0 and action == 0:
+            if random.random() < 0.5:  # 隨機嘗試增加門檻值
+                new_threshold = old_threshold + self.action_space[2]  # 最小增量
+            else:
+                new_threshold = old_threshold + self.action_space[0]  # 最小減量
+        elif new_threshold == 1 and action == 0:
+            if random.random() < 0.5:  # 隨機嘗試減少門檻值
+                new_threshold = old_threshold + self.action_space[0]  # 最小減量
+            else:
+                new_threshold = old_threshold + self.action_space[2]  # 最小增量
+
+        return new_threshold, state_index, action_index
+
+
+    def update_Q_table(self, state_index, action_index, reward, new_difference):
+        new_state_index = self.normalize_state(new_difference)
+        # 更新 Q 表
+        best_future_action = np.argmax(self.Q[new_state_index])
+        self.Q[state_index, action_index] += self.alpha * (reward + self.gamma * self.Q[new_state_index, best_future_action] - self.Q[state_index, action_index])
+
+    def compute_reward(self, previous_uploads, current_uploads):
+        # 簡單的報酬函數: 若新的上傳集合大小小於舊的則獎勵
+        if len(current_uploads) < len(previous_uploads):
+            return 1
+        elif len(current_uploads) > len(previous_uploads):
+            return -1
+        return 0  # 無變化時不獎勵也不懲罰
+    
+    
+    
+    
+    
+    
     # 從CSV檔案讀取數據
     def read_data(self, file_path):
         """
@@ -32,85 +81,26 @@ class QLearning():
         data = pd.read_csv(file_path)
         return data
 
-    # 初始化Q學習相關的參數
-    num_states = 10  # 定義狀態的數量
-    num_actions = 2  # 定義行動的選項數量，這裡是上傳或不上傳
-    Q_table = np.zeros((num_states, num_actions))  # 初始化Q表，所有值為0
-    learning_rate = 0.1  # 設定學習率
-    discount_factor = 0.9  # 設定折扣因子
-    episodes = 1000  # 設定訓練的回合數
-    epsilon = 0.1  # 設定ε，用於ε-貪婪策略控制探索和利用的平衡
-
-    # 將概率值映射到狀態
-    def map_probability_to_state(self, probability, num_states=10):
-        """
-        將概率映射到一個狀態值，用於Q表中的索引。
-        :param probability: 物件被預測為正類的概率。
-        :param num_states: 狀態的總數。
-        :return: 對應的狀態索引。
-        """
-        state = int(probability * num_states)
-        return min(state, num_states - 1)
-
-    # 根據ε-貪婪策略選擇動作
-    def choose_action(self, state, epsilon):
-        """
-        根據當前狀態和ε-貪婪策略選擇行動。
-        :param state: 當前的狀態。
-        :param epsilon: ε值，控制探索和利用的平衡。
-        :return: 選擇的行動，0或1。
-        """
-        if np.random.rand() < epsilon:
-            return np.random.choice([0, 1])
-        else:
-            return np.argmax(self.Q_table[state, :])
 
     # 更新門檻值
-    def update_threshold(self, old_threshold, new_threshold):
-        """
-        根據新舊門檻值的差異決定是否更新門檻值。
-        :param old_threshold: 舊的門檻值。
-        :param new_threshold: 新計算的門檻值。
-        :return: 更新後的門檻值和是否進行了更新的標誌。
-        """
-        print(abs(new_threshold - old_threshold))
-        if abs(new_threshold - old_threshold) > 0.005:
-            return new_threshold, True  # 返回新的門檻值及更新標誌
-        else:
-            return old_threshold, False  # 返回舊的門檻值及不更新標誌
-
-    # 模擬Q學習訓練過程
-    def q_learning_train(self, probabilities, threshold, epsilon):
-        """
-        執行Q學習算法進行訓練。
-        :param probabilities: 一系列物件被預測為正類的概率。
-        :param threshold: 決策閾值。
-        :param epsilon: ε值，用於ε-貪婪策略。
-        """
-        for episode in range(self.episodes):
-            for probability in probabilities:
-                state = self.map_probability_to_state(probability)
-                action = self.choose_action(state, epsilon)
-                reward = self.calculate_reward(probability, action, threshold)
-                next_state = state
-                # 根據Q學習公式更新Q值
-                self.Q_table[state, action] = (1 - self.learning_rate) * self.Q_table[state, action] + \
-                                        self.learning_rate * (reward + self.discount_factor * np.max(self.Q_table[next_state, :]))
+    # def update_threshold(self, old_threshold, new_threshold):
+    #     """
+    #     根據新舊門檻值的差異決定是否更新門檻值。
+    #     :param old_threshold: 舊的門檻值。
+    #     :param new_threshold: 新計算的門檻值。
+    #     :return: 更新後的門檻值和是否進行了更新的標誌。
+    #     """
+    #     print("abs new - old: ", abs(new_threshold - old_threshold))
+    #     if abs(new_threshold - old_threshold) > 0.005:
+    #         return new_threshold, True  # 返回新的門檻值及更新標誌
+    #     else:
+    #         return old_threshold, False  # 返回舊的門檻值及不更新標誌
 
     # 決定上傳的物件集合
-    def decide_uploads(self, probability_dict, Q_table, threshold):
-        """
-        根據當前的Q表和閾值，決定哪些物件應該上傳。
-        :param probability_dict: 一個包含物件概率的字典，鍵是物件的標識，值是對應的概率。
-        :param Q_table: 當前的Q表。
-        :param threshold: 決策閾值。
-        :return: 決定上傳的物件集合。
-        """
+    def decide_uploads(self, probability_dict, threshold):
         upload_set = set()
         for objectKey, probability in probability_dict.items():
-            state = self.map_probability_to_state(probability)
-            action = np.argmax(Q_table[state, :])
-            if action == 1:  # 如果決定為上傳
+            if probability > threshold:
                 upload_set.add(objectKey)
         return upload_set
 
@@ -178,11 +168,8 @@ class QLearning():
         probability_dict = newPSky.calculate_probabilities(original_data)
         initial_threshold = sum(probability_dict.values()) / len(probability_dict)
         print(initial_threshold)
-        # 使用初始數據和閾值訓練Q學習模型
-        self.q_learning_train(list(probability_dict.values()), initial_threshold, self.epsilon)
         # 決定初始上傳集合
-        last_upload_set = self.decide_uploads(probability_dict, self.Q_table, initial_threshold)
-        print(self.Q_table)
+        last_upload_set = self.decide_uploads(probability_dict, initial_threshold)
 
         total_upload_set= total_upload_set | last_upload_set
         total_upload_set_size += len(last_upload_set)
@@ -204,23 +191,30 @@ class QLearning():
         if len(probability_dict) == 0:
             return 0, None  # 如果新的數據集為空，返回0和None
 
-        # 計算新的閾值
+        # 計算新的門檻值
         new_threshold = sum(probability_dict.values()) / len(probability_dict)
-        print(new_threshold)
+        print("new_threshold: " , new_threshold)
         
         # 根據新舊閾值差異決定是否更新閾值
-        new_threshold, should_update_threshold = self.update_threshold(old_threshold, new_threshold)
+        # new_threshold, should_update_threshold = self.update_threshold(old_threshold, new_threshold)
+        new_threshold, state_index, action_index= self.update_threshold(old_threshold, new_threshold)
+        # print("state_index: " , state_index)
         
-        if should_update_threshold:
-            # 如果需要更新閾值，重新訓練Q學習模型
-            self.q_learning_train(list(probability_dict.values()), new_threshold, self.epsilon)
-
+        # print("action_index: " , action_index)
+       
         # 根據新的Q表和閾值決定上傳集合
-        current_upload_set = self.decide_uploads(probability_dict, self.Q_table, new_threshold)
-        print(self.Q_table)
+        current_upload_set = self.decide_uploads(probability_dict, new_threshold)
+        # 計算報酬
+        reward = self.compute_reward(last_upload_set, current_upload_set)
 
+        # 更新 Q 表
+        new_difference = sum(probability_dict.values()) / len(probability_dict) - new_threshold
+        self.update_Q_table(state_index, action_index, reward, new_difference)
+        
+        print(self.Q, "\n\n")
         # 根據是否更新閾值和上傳集合的變化決定返回值
-        result_threshold = new_threshold if should_update_threshold else old_threshold
+        result_threshold = new_threshold
+        # result_threshold = new_threshold if should_update_threshold else old_threshold
         if current_upload_set == last_upload_set:
             print("新的set和舊的相同不上傳")
             result_set = last_upload_set
