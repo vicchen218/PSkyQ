@@ -88,7 +88,10 @@ class BruteMethod():
             if result_upload_set == None:
                 break  # 如果上傳集合為空，結束更新循環
             
-        print("total_upload_set_size: " + str(total_upload_set_size))
+        # print("End total_upload_set: ")
+        # print(total_upload_set)
+        # print("size: " + str(len(total_upload_set)))
+        return total_upload_set
         
     # 滑動窗口初始化
     def SlideWindowInitialize(self, original_data, total_upload_set):
