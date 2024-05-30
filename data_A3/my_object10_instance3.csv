@@ -1,0 +1,11 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Probability_1,Instance2,Attribute1_2,Attribute2_2,Attribute3_2,Probability_2,Instance3,Attribute1_3,Attribute2_3,Attribute3_3,Probability_3
+Object1_my,Instance1,56,-8,100,0.16,Instance2,56,-50,100,0.58,Instance3,56,-43,100,0.26
+Object2_my,Instance1,597,-1,190,0.24,Instance2,597,-3,190,0.57,Instance3,597,-26,190,0.19
+Object3_my,Instance1,616,-23,90,0.68,Instance2,616,-2,90,0.01,Instance3,616,-38,90,0.31
+Object4_my,Instance1,610,-30,50,0.36,Instance2,610,-27,50,0.39,Instance3,610,-41,50,0.24
+Object5_my,Instance1,167,-46,50,0.03,Instance2,167,-20,50,0.63,Instance3,167,-47,50,0.34
+Object6_my,Instance1,96,-9,30,0.3,Instance2,96,-3,30,0.56,Instance3,96,-21,30,0.14
+Object7_my,Instance1,351,-42,190,0.8,Instance2,351,-12,190,0.12,Instance3,351,-12,190,0.08
+Object8_my,Instance1,340,-5,200,0.36,Instance2,340,-46,200,0.49,Instance3,340,-34,200,0.16
+Object9_my,Instance1,904,-32,70,0.22,Instance2,904,-49,70,0.74,Instance3,904,-6,70,0.04
+Object10_my,Instance1,1,-12,10,0.93,Instance2,1,-1,10,0.0,Instance3,1,-23,10,0.07

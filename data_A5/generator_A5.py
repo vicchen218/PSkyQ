@@ -2,11 +2,11 @@ import csv
 import random
 
 def generate_csv(filename, object_count, instances_per_object, localName):
-    # 動態生成列名
+    # Generate dynamic column names
     fieldnames = ['Object']
     for i in range(1, instances_per_object + 1):
         fieldnames.extend([
-            f'Instance{i}', f'Attribute1_{i}', f'Attribute2_{i}', f'Attribute3_{i}', f'Probability_{i}'
+            f'Instance{i}', f'Attribute1_{i}', f'Attribute2_{i}', f'Attribute3_{i}', f'Attribute4_{i}', f'Attribute5_{i}', f'Probability_{i}'
         ])
     
     with open(filename, 'w', newline='') as csvfile:
@@ -18,6 +18,7 @@ def generate_csv(filename, object_count, instances_per_object, localName):
             total_probability = 0
             attribute1 = random.randint(1, 1000)
             attribute3_value = random.randint(1, 20) * 10
+            
             for instance_index in range(1, instances_per_object + 1):
                 if instance_index == instances_per_object:
                     probability = 1 - total_probability
@@ -25,14 +26,17 @@ def generate_csv(filename, object_count, instances_per_object, localName):
                     probability = random.uniform(0, 1 - total_probability)
                 total_probability += probability
                 
-                
                 attribute2 = random.randint(-50, -1)
+                attribute4_value = random.randint(0, 1000)  # Random value between 0 and 1000
+                attribute5_value = random.randint(0, 1000)  # Random value between 0 and 1000
                 
                 row_dict.update({
                     f'Instance{instance_index}': f'Instance{instance_index}',
                     f'Attribute1_{instance_index}': attribute1,
                     f'Attribute2_{instance_index}': attribute2,
                     f'Attribute3_{instance_index}': attribute3_value,
+                    f'Attribute4_{instance_index}': attribute4_value,
+                    f'Attribute5_{instance_index}': attribute5_value,
                     f'Probability_{instance_index}': round(probability, 2),
                 })
             
@@ -41,12 +45,10 @@ def generate_csv(filename, object_count, instances_per_object, localName):
     print(f'File {filename} has been created.')
 
 # Example usage:
-# filename = input("Enter the desired filename (including .csv extension): ")
 localName = input("Enter local name: ")
 object_count = int(input("Enter object count: "))
 instances_per_object = int(input("Enter instances per object: "))
-folder_path = "./data/"
-filename = folder_path + ( localName  + "_" + "object" + str(object_count) + "_instance" + str(instances_per_object)  + ".csv")
-
+folder_path = "./data_A5/"
+filename = folder_path + (localName + "_" + "object" + str(object_count) + "_instance" + str(instances_per_object) + ".csv")
 
 generate_csv(filename, object_count, instances_per_object, localName)

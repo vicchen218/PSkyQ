@@ -1,0 +1,11 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Attribute4_1,Attribute5_1,Probability_1,Instance2,Attribute1_2,Attribute2_2,Attribute3_2,Attribute4_2,Attribute5_2,Probability_2,Instance3,Attribute1_3,Attribute2_3,Attribute3_3,Attribute4_3,Attribute5_3,Probability_3
+Object1_my,Instance1,4,-17,170,483,560,0.14,Instance2,4,-36,170,994,563,0.7,Instance3,4,-49,170,141,588,0.17
+Object2_my,Instance1,227,-10,180,196,485,0.39,Instance2,227,-41,180,604,831,0.5,Instance3,227,-37,180,618,409,0.11
+Object3_my,Instance1,174,-11,140,740,790,0.81,Instance2,174,-37,140,18,608,0.18,Instance3,174,-7,140,128,109,0.01
+Object4_my,Instance1,950,-33,180,228,505,0.3,Instance2,950,-41,180,641,605,0.51,Instance3,950,-17,180,168,166,0.19
+Object5_my,Instance1,404,-7,40,822,350,0.39,Instance2,404,-50,40,289,399,0.61,Instance3,404,-23,40,4,784,0.0
+Object6_my,Instance1,347,-9,150,725,960,0.53,Instance2,347,-24,150,740,411,0.17,Instance3,347,-42,150,598,505,0.3
+Object7_my,Instance1,847,-36,180,425,19,0.85,Instance2,847,-30,180,551,759,0.03,Instance3,847,-40,180,402,308,0.12
+Object8_my,Instance1,168,-17,80,752,484,0.54,Instance2,168,-47,80,828,203,0.32,Instance3,168,-35,80,305,362,0.13
+Object9_my,Instance1,575,-31,190,664,136,0.96,Instance2,575,-26,190,428,800,0.02,Instance3,575,-28,190,497,76,0.02
+Object10_my,Instance1,938,-40,30,765,408,0.02,Instance2,938,-46,30,857,670,0.9,Instance3,938,-50,30,579,579,0.08

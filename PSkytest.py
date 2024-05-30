@@ -1,4 +1,5 @@
 import pandas as pd
+from Read_CSV import Read_CSV
 
 class PSky():
     def is_dominated(self,u_i_a, u_j_r_a):
@@ -38,7 +39,7 @@ class PSky():
     def runFun(self, input_csv_file_name):
         # 讀取CSV檔案
         csv_file_path = "./data/"
-        data = self.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
+        data = Read_CSV.read_data_from_csv(csv_file_path + input_csv_file_name + '.csv')
         # 計算並返回結果
         probabilities = self.calculate_probabilities(data)
         print(probabilities)

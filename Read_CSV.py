@@ -2,19 +2,22 @@ import pandas as pd
 
 class Read_CSV():
     # from qlearning_sw_t1 import get_skyline_set as process_second  # 假設函數名稱是 get_skyline_set
-    def read_data_from_csv(csv_file_path):
-        # 從CSV檔案讀取數據
+    def read_data_from_csv(csv_file_path, attributeSize):
+        # Read data from CSV file
         df = pd.read_csv(csv_file_path)
-        # 將DataFrame轉換為所需的數據結構
+        # Convert DataFrame into the required data structure
         data = {}
         for _, row in df.iterrows():
             object_name = row['Object']
             instances_data = []
-            # 對於每個實例，提取其屬性和概率
-            for i in range(1, ((len(row) - 1) // 5) + 1):  # 假設每個實例有5個欄位（包含實例名稱）
+            # Calculate the number of instances based on the length of the row and attributeSize
+            num_instances = (len(row) - 1) // (attributeSize + 2)  # Update this to reflect the correct number of fields per instance
+            for i in range(1, num_instances + 1):
                 instance_id = row[f'Instance{i}']
                 prob = row[f'Probability_{i}']
-                attributes = [row[f'Attribute1_{i}'], row[f'Attribute2_{i}'], row[f'Attribute3_{i}']]
+                # Generate attribute list dynamically based on attributeSize
+                attributes = [row[f'Attribute{j}_{i}'] for j in range(1, attributeSize + 1)]
+                
                 instances_data.append((instance_id, prob, attributes))
             data[object_name] = instances_data
         return data
@@ -72,7 +75,7 @@ class Read_CSV():
         df = pd.DataFrame(data, columns=header)
 
         # Save to CSV
-        df.to_csv("./output_qlearning/" + file_name + 'output_combine'+ '.csv', index=False)
+        df.to_csv("./output_qlearning/" + file_name + '_output_combine'+ '.csv', index=False)
 
         # Display the DataFrame
         # print(df)

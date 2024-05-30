@@ -155,9 +155,6 @@ class QLearning():
             times += 1
             if last_upload_set == None:
                 break  # 如果上傳集合為空，結束更新循環
-        print("End total_upload_set: ")
-        print(total_upload_set)
-        print("size: " + str(len(total_upload_set)))
         
         return total_upload_set
         
@@ -203,9 +200,6 @@ class QLearning():
         # 根據新舊閾值差異決定是否更新閾值
         # new_threshold, should_update_threshold = self.update_threshold(old_threshold, new_threshold)
         new_threshold, state_index, action_index= self.update_threshold(old_threshold, new_threshold)
-        # print("state_index: " , state_index)
-        
-        # print("action_index: " , action_index)
        
         # 根據新的Q表和閾值決定上傳集合
         current_upload_set = self.decide_uploads(probability_dict, new_threshold)
@@ -216,7 +210,7 @@ class QLearning():
         new_difference = sum(probability_dict.values()) / len(probability_dict) - new_threshold
         self.update_Q_table(state_index, action_index, reward, new_difference)
         
-        print(self.Q, "\n\n")
+        # print(self.Q, "\n\n")
         # 根據是否更新閾值和上傳集合的變化決定返回值
         result_threshold = new_threshold
         # result_threshold = new_threshold if should_update_threshold else old_threshold
@@ -227,11 +221,11 @@ class QLearning():
             print("新的set和舊的不相同")
             total_upload_set_size += len(current_upload_set)
             result_set = current_upload_set
-            print('set difference: ')
-            print(total_upload_set ^ current_upload_set)
+            save_set = total_upload_set
             total_upload_set=current_upload_set | total_upload_set
-       
             
+            print(total_upload_set - save_set)
+
         return result_threshold, result_set, total_upload_set_size,total_upload_set
 
 # 實例化PSky類，用於後續計算物件的概率

@@ -1,0 +1,6 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Attribute4_1,Attribute5_1,Probability_1,Instance2,Attribute1_2,Attribute2_2,Attribute3_2,Attribute4_2,Attribute5_2,Probability_2,Instance3,Attribute1_3,Attribute2_3,Attribute3_3,Attribute4_3,Attribute5_3,Probability_3
+Object1_1,Instance1,789,814,558,834,313,0.18,Instance2,39,802,73,446,232,0.68,Instance3,184,736,775,62,705,0.14
+Object2_1,Instance1,309,941,168,593,136,0.66,Instance2,472,161,572,128,83,0.13,Instance3,861,920,450,275,998,0.21
+Object3_1,Instance1,733,289,597,339,254,0.38,Instance2,265,102,779,2,335,0.11,Instance3,824,386,867,492,860,0.51
+Object4_1,Instance1,85,789,677,301,366,0.38,Instance2,643,327,521,558,913,0.2,Instance3,269,24,870,727,353,0.42
+Object5_1,Instance1,787,335,544,366,986,0.64,Instance2,698,782,45,86,57,0.14,Instance3,409,662,84,355,479,0.22

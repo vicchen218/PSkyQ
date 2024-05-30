@@ -1,0 +1,11 @@
+Object,Instance1,Attribute1_1,Attribute2_1,Attribute3_1,Attribute4_1,Attribute5_1,Attribute6_1,Attribute7_1,Probability_1,Instance2,Attribute1_2,Attribute2_2,Attribute3_2,Attribute4_2,Attribute5_2,Attribute6_2,Attribute7_2,Probability_2,Instance3,Attribute1_3,Attribute2_3,Attribute3_3,Attribute4_3,Attribute5_3,Attribute6_3,Attribute7_3,Probability_3
+Object1_my,Instance1,463,275,32,770,25,556,64,0.77,Instance2,31,183,762,324,121,468,408,0.06,Instance3,94,270,222,938,235,306,632,0.17
+Object2_my,Instance1,547,861,396,587,753,413,727,0.6,Instance2,312,933,826,236,838,276,295,0.33,Instance3,843,689,12,76,234,168,693,0.08
+Object3_my,Instance1,252,800,212,228,160,609,479,0.04,Instance2,754,531,384,542,991,895,419,0.46,Instance3,328,409,483,172,589,882,171,0.51
+Object4_my,Instance1,26,7,138,718,615,447,430,0.43,Instance2,379,815,489,40,633,939,957,0.29,Instance3,786,242,597,926,645,678,935,0.28
+Object5_my,Instance1,645,725,168,558,785,997,453,0.81,Instance2,416,41,505,963,313,500,813,0.06,Instance3,887,159,825,527,295,265,240,0.12
+Object6_my,Instance1,402,280,173,715,330,64,566,0.49,Instance2,409,439,563,659,349,163,71,0.18,Instance3,653,474,505,781,363,546,909,0.33
+Object7_my,Instance1,223,763,170,880,958,9,56,0.34,Instance2,309,397,691,405,796,859,711,0.03,Instance3,989,610,508,668,214,455,395,0.64
+Object8_my,Instance1,862,307,660,48,245,195,222,0.21,Instance2,831,387,515,295,71,363,979,0.53,Instance3,309,315,89,682,185,523,453,0.26
+Object9_my,Instance1,203,948,534,519,832,100,688,0.27,Instance2,962,523,507,944,320,81,950,0.13,Instance3,147,357,329,244,170,2,163,0.6
+Object10_my,Instance1,617,687,441,812,753,609,572,0.31,Instance2,510,465,200,684,354,636,904,0.17,Instance3,961,542,255,367,915,832,351,0.52
